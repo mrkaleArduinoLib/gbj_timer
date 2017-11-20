@@ -1,0 +1,22 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+gbj_timer_handler	KEYWORD1
+gbj_timer_record	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+gbj_timer	KEYWORD2
+run	KEYWORD2
+setPeriod	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+GBJ_TIMER_VERSION	LITERAL1
+GBJ_TIMER_TIMERS	LITERAL1
