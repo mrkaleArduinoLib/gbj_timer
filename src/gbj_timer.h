@@ -25,7 +25,7 @@
 #define GBJ_TIMER_H
 #define GBJ_TIMER_VERSION "GBJ_TIMER_1.0.0"
 
-#if defined(ARDUINO)
+#if defined(__AVR__)
   #if ARDUINO >= 100
     #include <Arduino.h>
   #else
