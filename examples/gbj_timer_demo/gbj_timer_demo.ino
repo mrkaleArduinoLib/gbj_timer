@@ -3,7 +3,7 @@
   Demonstration usage of gbjTimer library.
 
   DESCRIPTION:
-  The sketch writes to the serial monitor peridicaly.
+  The sketch writes to the serial monitor periodically.
 
   LICENSE:
   This program is free software; you can redistribute it and/or modify
