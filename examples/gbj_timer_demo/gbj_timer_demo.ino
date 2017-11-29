@@ -12,7 +12,7 @@
   CREDENTIALS:
   Author: Libor Gabaj
 */
-#define SKETCH "GBJ_TIMER-DEMO 1.0.0"
+#define SKETCH "GBJ_TIMER_DEMO 1.0.0"
 
 #include "gbj_timer.h"
 

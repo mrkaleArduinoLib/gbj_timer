@@ -20,7 +20,7 @@ Library provides periodical calling procedures (as the timer handlers) without i
 - **inttypes.h**: Integer type conversions. This header file includes the exact-width integer definitions and extends them with additional facilities provided by the implementation.
 
 
-<a id="Constants"></a>
+<a id="constants"></a>
 ## Constants
 - **GBJ_TIMER\_VERSION**: Name and semantic version of the library.
 - **GBJ_TIMER\_TIMERS**: Maximal number of available timers. Default is 8 and can be redefined by defining this macro before including the library header file into a sketch.
