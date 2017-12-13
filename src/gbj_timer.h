@@ -70,7 +70,8 @@ Constructor just creates the class instance object.
 
 PARAMETERS: none
 
-RETURN: Object performing the timer management
+RETURN:
+Library instance object performing the timer management.
 */
   gbj_timer();
 
