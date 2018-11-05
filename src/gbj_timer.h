@@ -1,6 +1,6 @@
 /*
   NAME:
-  gbj_timer
+  gbjTimer
 
   DESCRIPTION:
   Library provides periodical calling procedures.
@@ -23,7 +23,6 @@
  */
 #ifndef GBJ_TIMER_H
 #define GBJ_TIMER_H
-#define GBJ_TIMER_VERSION "GBJ_TIMER 1.0.0"
 
 #if defined(__AVR__)
   #if ARDUINO >= 100
@@ -32,30 +31,33 @@
     #include <WProgram.h>
   #endif
   #include <inttypes.h>
+#elif defined(ESP8266) || defined(ESP32)
+  #include <Arduino.h>
 #elif defined(PARTICLE)
   #include <Particle.h>
 #endif
 
-#ifndef GBJ_TIMER_TIMERS
-#define GBJ_TIMER_TIMERS  8
-#endif
-
 typedef void gbj_timer_handler();
-struct gbj_timer_record
-{
-  gbj_timer_handler* handler;
-  uint32_t timestamp;
-  uint32_t period;
-  bool startFlag;
-};
 
 class gbj_timer
 {
 public:
 //------------------------------------------------------------------------------
+// Public constants
+//------------------------------------------------------------------------------
+static const String VERSION;
+struct gbj_timer_record
+{
+  gbj_timer_handler* handler;
+  bool startFlag;
+  uint32_t period;
+  uint32_t timestamp;
+};
+
+
+//------------------------------------------------------------------------------
 // Public methods
 //------------------------------------------------------------------------------
-
 /*
 Constructor.
 
@@ -73,7 +75,7 @@ PARAMETERS: none
 RETURN:
 Library instance object performing the timer management.
 */
-  gbj_timer();
+gbj_timer(gbj_timer_record* timers);
 
 
 
@@ -88,7 +90,7 @@ Library instance object performing the timer management.
 
   RETURN: none
 */
-  void run();
+void run();
 
 
 
@@ -129,18 +131,25 @@ Library instance object performing the timer management.
                               period by this method.
     RETURN: none
   */
-  void setPeriod(
-    uint8_t timerIndex, \
-    uint32_t timerPeriod, \
-    gbj_timer_handler* timerHandler = 0, \
-    bool immediateStart = false);
+  void setPeriod(uint8_t timerIndex, uint32_t timerPeriod, \
+    gbj_timer_handler* timerHandler = 0, bool immediateStart = false);
 
 
 private:
 //------------------------------------------------------------------------------
 // Private attributes
 //------------------------------------------------------------------------------
-gbj_timer_record _timerParams[GBJ_TIMER_TIMERS];
+struct
+{
+  uint8_t cntTimers;  // Number of controlled timers
+  gbj_timer_record* timers;  // Pointer to external array of timer definitions
+} _status;
+
+
+//------------------------------------------------------------------------------
+// Private methods
+//------------------------------------------------------------------------------
+void init();
 
 };
 #endif

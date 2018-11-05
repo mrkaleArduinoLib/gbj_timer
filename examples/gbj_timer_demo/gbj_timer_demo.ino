@@ -16,13 +16,15 @@
 
 #include "gbj_timer.h"
 
-const unsigned int  TIMER_INDEX_DEMO_A   = 0;
-const unsigned int  TIMER_INDEX_DEMO_B   = 1;
+const unsigned int TIMER_INDEX_DEMO_A = 0;
+const unsigned int TIMER_INDEX_DEMO_B = 1;
 //
 const unsigned long TIMER_PERDIOD_DEMO_A = 3000;
 const unsigned long TIMER_PERDIOD_DEMO_B = 6000;
 
-gbj_timer Timer = gbj_timer();
+gbj_timer::gbj_timer_record timers[2];
+gbj_timer Timer = gbj_timer(timers);
+
 
 void timerDemoA()
 {
@@ -32,6 +34,7 @@ void timerDemoA()
   Serial.println(round);
 }
 
+
 void timerDemoB()
 {
   static unsigned int round;
@@ -40,12 +43,19 @@ void timerDemoB()
   Serial.println(round);
 }
 
+
 void setup()
 {
   Serial.begin(9600);
+  Serial.println(SKETCH);
+  Serial.println("Libraries:");
+  Serial.println(gbj_timer::VERSION);
+  Serial.println("---");
+
   Timer.setPeriod(TIMER_INDEX_DEMO_A, TIMER_PERDIOD_DEMO_A, timerDemoA);
   Timer.setPeriod(TIMER_INDEX_DEMO_B, TIMER_PERDIOD_DEMO_B, timerDemoB, true);
 }
+
 
 void loop()
 {
