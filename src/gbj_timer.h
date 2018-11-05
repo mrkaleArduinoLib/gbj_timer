@@ -115,19 +115,18 @@ Library instance object performing the timer management.
     timerHandler - Pointer to a procedure that is called periodically by
                    the timer.
                  - Data type: gbj_timer_handler
-                 - Default value: 0
+                 - Default value: 0 (no handler)
                  - Limited range: system address range
 
     immediateStart - Flag about immediate starting the timer.
-                     - If true: The timer handler is called at the very first
-                       calling the method run().
-                     - If false: The timer handler is the first time called
-                       after set time period counting from the setting period
-                       by this method.
                    - Data type: boolean
                    - Default value: false
                    - Limited range: true, false
-
+                     - true: The timer handler is called at the very first
+                             calling the method run().
+                     - false: The timer handler is the first time called
+                              after set time period counting from the setting
+                              period by this method.
     RETURN: none
   */
   void setPeriod(
