@@ -59,21 +59,22 @@ struct gbj_timer_record
 // Public methods
 //------------------------------------------------------------------------------
 /*
-Constructor.
+  Constructor.
 
-DESCRIPTION:
-Constructor just creates the class instance object.
-- Maximum of available timers is defined by macro GBJ_TIMER_TIMERS, which is set
-  to 8 by default.
-- The maximum of available timers can be change by defining macro
-  GBJ_TIMER_TIMERS before including this header file into a sketch.
-- There is no exact sanitizing for maximum number of timers, just by platform
-  and system memory for arrays.
+  DESCRIPTION:
+  onstructor just creates the class instance object and initiate a timers list
+  provided.
+  - A sketch should declare and define a one-dimensional array of type
+    gbj_timer_record with as many items as many timers are needed.
 
-PARAMETERS: none
+  PARAMETERS:
+  timers - Pointer to an array of type gbj_timer_record.
+           - Data type: gbj_timer_record
+           - Default value: none
+           - Limited range: valid address space
 
-RETURN:
-Library instance object performing the timer management.
+  RETURN:
+  Library instance object performing the timer management.
 */
 gbj_timer(gbj_timer_record* timers);
 
