@@ -5,18 +5,21 @@
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
-gbj_timer_handler	KEYWORD1
-gbj_timer_record	KEYWORD1
+Handler	KEYWORD1
+Timer	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+begin	KEYWORD2
 gbj_timer	KEYWORD2
+getTimers	KEYWORD2
+halt	KEYWORD2
+reset	KEYWORD2
+resume	KEYWORD2
 run	KEYWORD2
-setPeriod	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-GBJ_TIMER_VERSION	LITERAL1
-GBJ_TIMER_TIMERS	LITERAL1
+VERSION	LITERAL1

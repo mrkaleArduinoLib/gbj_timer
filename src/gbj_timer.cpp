@@ -1,23 +1,20 @@
 #include "gbj_timer.h"
-const String gbj_timer::VERSION = "GBJ_TIMER 1.0.0";
-
-
-gbj_timer::gbj_timer(gbj_timer_record* timers)
-{
-  _status.timers = timers;
-  _status.cntTimers = sizeof(timers);
-  init();
-}
-
+const String gbj_timer::VERSION = "GBJ_TIMER 1.1.0";
 
 void gbj_timer::run()
 {
   for (uint8_t i = 0; i < _status.cntTimers; i++)
   {
-    if (_status.timers[i].period == 0) continue;  // Inactive timer
-    if (_status.timers[i].handler == 0) continue;  // Useless timer
+    if (_status.timers[i].period == 0)
+      continue; // No period timer
+    if (_status.timers[i].handler == 0)
+      continue; // Useless timer
+    if (!_status.timers[i].activeFlag)
+      continue; // Inactive timer
+    // Active timer
     unsigned long tsNow = millis();
-    if (tsNow - _status.timers[i].timestamp >= _status.timers[i].period || _status.timers[i].startFlag)
+    if (tsNow - _status.timers[i].timestamp >= _status.timers[i].period ||
+        _status.timers[i].startFlag)
     {
       _status.timers[i].timestamp = tsNow;
       _status.timers[i].startFlag = false;
@@ -26,31 +23,54 @@ void gbj_timer::run()
   }
 }
 
-
-//-------------------------------------------------------------------------
-// Setters
-//-------------------------------------------------------------------------
-void gbj_timer::setPeriod(uint8_t timerIndex, uint32_t timerPeriod, \
-  gbj_timer_handler* timerHandler, bool immediateStart)
+void gbj_timer::begin(uint8_t timerIndex,
+                      uint32_t timerPeriod,
+                      Handler *timerHandler,
+                      bool immediateStart)
 {
-  timerIndex = constrain(timerIndex, 0, _status.cntTimers - 1);
-  // Define or redefine timer
-  _status.timers[timerIndex].period = timerPeriod;
-  _status.timers[timerIndex].handler = timerHandler;
-  _status.timers[timerIndex].startFlag = immediateStart;
-  _status.timers[timerIndex].timestamp = millis();
+  if (timerIndex >= 0 && timerIndex < _status.cntTimers)
+  {
+    _status.timers[timerIndex].period = timerPeriod;
+    _status.timers[timerIndex].handler = timerHandler;
+    _status.timers[timerIndex].startFlag = immediateStart;
+    reset(timerIndex);
+    resume(timerIndex);
+  }
 }
 
+void gbj_timer::reset(uint8_t timerIndex)
+{
+  if (timerIndex >= 0 && timerIndex < _status.cntTimers)
+  {
+    _status.timers[timerIndex].timestamp = millis();
+  }
+}
 
-//------------------------------------------------------------------------------
-// Private methods
-//------------------------------------------------------------------------------
+void gbj_timer::halt(uint8_t timerIndex)
+{
+  if (timerIndex >= 0 && timerIndex < _status.cntTimers)
+  {
+    _status.timers[timerIndex].activeFlag = false;
+  }
+}
+
+void gbj_timer::resume(uint8_t timerIndex)
+{
+  if (timerIndex >= 0 && timerIndex < _status.cntTimers &&
+      !_status.timers[timerIndex].activeFlag)
+  {
+    _status.timers[timerIndex].activeFlag = true;
+    reset(timerIndex);
+  }
+}
+
 void gbj_timer::init()
 {
   for (uint8_t i = 0; i < _status.cntTimers; i++)
   {
     _status.timers[i].handler = 0;
     _status.timers[i].startFlag = false;
+    _status.timers[i].activeFlag = true;
     _status.timers[i].period = 0;
     _status.timers[i].timestamp = 0;
   }

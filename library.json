@@ -1,12 +1,12 @@
 {
-  "name": "gbjTimer",
+  "name": "gbj_timer",
   "keywords": "timer",
   "description": "Library calls procedures (timer handlers) periodically without system interrupts. It enables defined multiple timers by one library instance object. Maximum number of available timers can be redefined.",
   "repository": {
     "type": "git",
     "url": "https://github.com/mrkaleArduinoLib/gbj_timer.git"
   },
-  "version": "1.0.0",
+  "version": "1.1.0",
   "frameworks": "arduino",
   "platforms": ["atmelavr", "atmelsam", "espressif8266", "espressif32"]
 }

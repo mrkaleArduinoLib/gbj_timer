@@ -12,37 +12,34 @@
   CREDENTIALS:
   Author: Libor Gabaj
 */
-#define SKETCH "GBJ_TIMER_DEMO 1.0.0"
+#define SKETCH "GBJ_TIMER_DEMO 1.1.0"
 
 #include "gbj_timer.h"
 
-const unsigned int TIMER_INDEX_DEMO_A = 0;
-const unsigned int TIMER_INDEX_DEMO_B = 1;
+const byte TIMER_INDEX_DEMO_A = 0;
+const byte TIMER_INDEX_DEMO_B = 1;
 //
-const unsigned long TIMER_PERDIOD_DEMO_A = 3000;
-const unsigned long TIMER_PERDIOD_DEMO_B = 6000;
+const unsigned long TIMER_PERIOD_DEMO_A = 3000;
+const unsigned long TIMER_PERIOD_DEMO_B = 6000;
 
-gbj_timer::gbj_timer_record timers[2];
-gbj_timer Timer = gbj_timer(timers);
-
+gbj_timer::Timer timers[2];
+gbj_timer timer = gbj_timer(timers, sizeof(timers) / sizeof(timers[0]));
 
 void timerDemoA()
 {
-  static unsigned int round;
+  static byte round;
   round++;
   Serial.print("TimerDemo A: ");
   Serial.println(round);
 }
 
-
 void timerDemoB()
 {
-  static unsigned int round;
+  static byte round;
   round++;
   Serial.print("TimerDemo B: ");
   Serial.println(round);
 }
-
 
 void setup()
 {
@@ -52,12 +49,11 @@ void setup()
   Serial.println(gbj_timer::VERSION);
   Serial.println("---");
 
-  Timer.setPeriod(TIMER_INDEX_DEMO_A, TIMER_PERDIOD_DEMO_A, timerDemoA);
-  Timer.setPeriod(TIMER_INDEX_DEMO_B, TIMER_PERDIOD_DEMO_B, timerDemoB, true);
+  timer.begin(TIMER_INDEX_DEMO_A, TIMER_PERIOD_DEMO_A, timerDemoA);
+  timer.begin(TIMER_INDEX_DEMO_B, TIMER_PERIOD_DEMO_B, timerDemoB, true);
 }
-
 
 void loop()
 {
-  Timer.run();
+  timer.run();
 }
