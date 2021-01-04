@@ -6,14 +6,11 @@
 # Datatypes (KEYWORD1)
 #######################################
 Handler	KEYWORD1
-Timer	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-begin	KEYWORD2
 gbj_timer	KEYWORD2
-getTimers	KEYWORD2
 halt	KEYWORD2
 reset	KEYWORD2
 resume	KEYWORD2

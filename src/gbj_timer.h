@@ -3,10 +3,7 @@
   gbjTimer
 
   DESCRIPTION:
-  Library provides periodical calling of procedures.
-  - The timer identification numbers (indices to the timer list) should be
-    managed by a sketch. On the other hand, it enables redefining timer
-    on the fly.
+  Library provides periodical calling of a procedure.
 
   LICENSE:
   This program is free software; you can redistribute it and/or modify
@@ -40,87 +37,29 @@ public:
   static const String VERSION;
 
   typedef void Handler();
-  struct Timer
-  {
-    Handler *handler;
-    bool startFlag;
-    bool activeFlag;
-    uint32_t period;
-    uint32_t timestamp;
-  };
 
   /*
     Constructor.
 
     DESCRIPTION:
-    Constructor just creates the class instance object and initiate a timers
-    list provided.
-    - A sketch should declare and define a one-dimensional array of type
-      Timer with as many items as many timers are needed or more.
-
-    PARAMETERS:
-    timerTable - Pointer to a list of timer records.
-      - Data type: Timer
-      - Default value: none
-      - Limited range: valid address space
-
-    timersCount - Number of timer records used from timerTable. Usually all of
-    them.
-      - Data type: non-negative integer
-      - Default value: none
-      - Limited range: 0 ~ 255
-
-    RETURN: object
-  */
-  gbj_timer(Timer *timerTable, uint8_t timersCount)
-  {
-    _status.timers = timerTable;
-    _status.cntTimers = timersCount;
-    init();
-  }
-
-  /*
-    Process all registered timers.
-
-    DESCRIPTION:
-    The method should be called in the LOOP section of a sketch. It evaluates
-    registered timers and call appropriate timer handlers at appripriate time.
-    - The method does not run halted timers, timers without a handler, and
-    timers with zero time period.
-
-    PARAMETERS: none
-
-    RETURN: none
-  */
-  void run();
-
-  /*
-    Register timer.
-
-    DESCRIPTION:
-    The method registers a timer by storing its parameters.
-    - A registered timer is considered one with defined timer handler.
+    Constructor creates the class instance object and initiate a timer.
     - Timer handler is a procedure (function) within a sketch that receives
       no parameters and returns no value.
 
     PARAMETERS:
-    timerIndex - Identification number of a timer.
-      - Data type: non-negative integer
-      - Default value: none
-      - Limited range: 0 ~ 255
-
     timerPeriod - The duration of repeating interval in milliseconds.
       - Data type: non-negative integer
       - Default value: none
       - Limited range: 0 ~ 2^32 - 1
 
-    timerHandler - Pointer to a procedure that is called periodically by
+    timerHandler - Pointer to a procedure within a sketch that receives
+      no parameters and returns no value, and is called periodically by
       the timer.
-      - Data type: gbj_timer_handler
-      - Default value: 0 (no handler)
+      - Data type: Handler
+      - Default value: none
       - Limited range: system address range
 
-    immediateStart - Flag about immediate starting the timer.
+    start - Flag about immediate starting the timer.
       - Data type: boolean
       - Default value: false
       - Limited range: true, false
@@ -131,44 +70,68 @@ public:
                 period by this method.
     RETURN: none
   */
-  void begin(uint8_t timerIndex,
-             uint32_t timerPeriod,
-             Handler *timerHandler = 0,
-             bool immediateStart = false);
+  inline gbj_timer(uint32_t timerPeriod,
+                   Handler *timerHandler,
+                   bool start = false)
+  {
+    _timer.period = timerPeriod;
+    _timer.handler = timerHandler;
+    _timer.flagStart = start;
+    reset();
+    resume();
+  }
+
+  /*
+    Process a timer.
+
+    DESCRIPTION:
+    The method should be called in the LOOP section of a sketch. It evaluates
+    a timer and calls its handler at appripriate time.
+    - The method does not run a halted timer and one with zero time period.
+
+    PARAMETERS: none
+
+    RETURN: none
+  */
+  void run()
+  {
+    if (_timer.period == 0 || !_timer.flagActive)
+      return;
+    // Active timer
+    unsigned long tsNow = millis();
+    if (tsNow - _timer.timestamp >= _timer.period || _timer.flagStart)
+    {
+      _timer.timestamp = tsNow;
+      _timer.flagStart = false;
+      _timer.handler();
+    }
+  }
 
   /*
     Reset timer.
 
     DESCRIPTION:
-    The method sets the timestamp of a timer to the current time, so that
+    The method sets the timestamp of the timer to the current time, so that
     the timer starts counting from beginning of its period.
 
-    PARAMETERS:
-    timerIndex - Identification number of a timer.
-      - Data type: non-negative integer
-      - Default value: none
-      - Limited range: registared timers
+    PARAMETERS: none
 
     RETURN: none
   */
-  void reset(uint8_t timerIndex);
+  inline void reset() { _timer.timestamp = millis(); }
 
   /*
     Halt timer.
 
     DESCRIPTION:
-    The method suspends (temprary stops) a timer and makes it inactive, so that
-    the timer's handler is not run more.
+    The method suspends (temprary stops) the timer and makes it inactive, so
+    that the timer's handler is not run more.
 
-    PARAMETERS:
-    timerIndex - Identification number of a timer.
-      - Data type: non-negative integer
-      - Default value: none
-      - Limited range: registared timers
+    PARAMETERS: none
 
     RETURN: none
   */
-  void halt(uint8_t timerIndex);
+  inline void halt() { _timer.flagActive = false; }
 
   /*
     Resume timer.
@@ -180,26 +143,28 @@ public:
     - The timer's period is measured from resuming.
     - Resuming still active timer has no effect.
 
-    PARAMETERS:
-    timerIndex - Identification number of a timer.
-      - Data type: non-negative integer
-      - Default value: none
-      - Limited range: registared timers
+    PARAMETERS: none
 
     RETURN: none
   */
-  void resume(uint8_t timerIndex);
-
-  // Public getters
-  inline uint8_t getTimers() { return _status.cntTimers; }
+  inline void resume()
+  {
+    if (!_timer.flagActive)
+    {
+      _timer.flagActive = true;
+      reset();
+    }
+  }
 
 private:
-  struct
+  struct Timer
   {
-    uint8_t cntTimers; // Number of controlled timers
-    Timer *timers; // Pointer to external array of timer definitions
-  } _status;
-
-  void init();
+    Handler *handler;
+    bool flagStart;
+    bool flagActive;
+    uint32_t period;
+    uint32_t timestamp;
+  } _timer;
 };
+
 #endif

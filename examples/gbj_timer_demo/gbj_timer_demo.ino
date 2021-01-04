@@ -1,6 +1,6 @@
 /*
   NAME:
-  Demonstration usage of gbjTimer library.
+  Demonstration usage of gbj_timer library.
 
   DESCRIPTION:
   The sketch writes to the serial monitor periodically.
@@ -15,15 +15,6 @@
 #define SKETCH "GBJ_TIMER_DEMO 1.1.0"
 
 #include "gbj_timer.h"
-
-const byte TIMER_INDEX_DEMO_A = 0;
-const byte TIMER_INDEX_DEMO_B = 1;
-//
-const unsigned long TIMER_PERIOD_DEMO_A = 3000;
-const unsigned long TIMER_PERIOD_DEMO_B = 6000;
-
-gbj_timer::Timer timers[2];
-gbj_timer timer = gbj_timer(timers, sizeof(timers) / sizeof(timers[0]));
 
 void timerDemoA()
 {
@@ -41,6 +32,9 @@ void timerDemoB()
   Serial.println(round);
 }
 
+gbj_timer timerA(3000L, timerDemoA);
+gbj_timer timerB(6000L, timerDemoB, true);
+
 void setup()
 {
   Serial.begin(9600);
@@ -48,12 +42,10 @@ void setup()
   Serial.println("Libraries:");
   Serial.println(gbj_timer::VERSION);
   Serial.println("---");
-
-  timer.begin(TIMER_INDEX_DEMO_A, TIMER_PERIOD_DEMO_A, timerDemoA);
-  timer.begin(TIMER_INDEX_DEMO_B, TIMER_PERIOD_DEMO_B, timerDemoB, true);
 }
 
 void loop()
 {
-  timer.run();
+  timerA.run();
+  timerB.run();
 }
