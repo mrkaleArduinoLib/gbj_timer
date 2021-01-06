@@ -11,10 +11,12 @@ Handler	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 gbj_timer	KEYWORD2
+getPeriod	KEYWORD2
 halt	KEYWORD2
 reset	KEYWORD2
 resume	KEYWORD2
 run	KEYWORD2
+setPeriod	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

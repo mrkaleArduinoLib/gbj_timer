@@ -1,6 +1,6 @@
 /*
   NAME:
-  gbjTimer
+  gbj_timer
 
   DESCRIPTION:
   Library provides periodical calling of a procedure.
@@ -19,11 +19,7 @@
 #define GBJ_TIMER_H
 
 #if defined(__AVR__)
-  #if ARDUINO >= 100
-    #include <Arduino.h>
-  #else
-    #include <WProgram.h>
-  #endif
+  #include <Arduino.h>
   #include <inttypes.h>
 #elif defined(ESP8266) || defined(ESP32)
   #include <Arduino.h>
@@ -45,6 +41,8 @@ public:
     Constructor creates the class instance object and initiate a timer.
     - Timer handler is a procedure (function) within a sketch that receives
       no parameters and returns no value.
+    - Timer without a time handler is suitable for created internal timer
+    objects in classes and run their member functions as handlers separately.
 
     PARAMETERS:
     timerPeriod - The duration of repeating interval in milliseconds.
@@ -55,8 +53,9 @@ public:
     timerHandler - Pointer to a procedure within a sketch that receives
       no parameters and returns no value, and is called periodically by
       the timer.
+      If no handler is provided, the timer just runs.
       - Data type: Handler
-      - Default value: none
+      - Default value: 0
       - Limited range: system address range
 
     start - Flag about immediate starting the timer.
@@ -68,15 +67,16 @@ public:
         - false: The timer handler is the first time called
                 after set time period counting from the setting
                 period by this method.
+
     RETURN: none
   */
   inline gbj_timer(uint32_t timerPeriod,
-                   Handler *timerHandler,
+                   Handler *timerHandler = 0,
                    bool start = false)
   {
-    _timer.period = timerPeriod;
-    _timer.handler = timerHandler;
-    _timer.flagStart = start;
+    _period = timerPeriod;
+    _handler = timerHandler;
+    _flagStart = start;
     reset();
     resume();
   }
@@ -91,20 +91,26 @@ public:
 
     PARAMETERS: none
 
-    RETURN: none
+    RETURN:
+    Flag about reaching a timer period and some action should be taken.
   */
-  void run()
+  bool run()
   {
-    if (_timer.period == 0 || !_timer.flagActive)
-      return;
+    if (_period == 0 || !_flagActive)
+      return false;
     // Active timer
     unsigned long tsNow = millis();
-    if (tsNow - _timer.timestamp >= _timer.period || _timer.flagStart)
+    if (tsNow - _timestamp >= _period || _flagStart)
     {
-      _timer.timestamp = tsNow;
-      _timer.flagStart = false;
-      _timer.handler();
+      _timestamp = tsNow;
+      _flagStart = false;
+      if (_handler)
+      {
+        _handler();
+      }
+      return true;
     }
+    return false;
   }
 
   /*
@@ -118,7 +124,7 @@ public:
 
     RETURN: none
   */
-  inline void reset() { _timer.timestamp = millis(); }
+  inline void reset() { _timestamp = millis(); }
 
   /*
     Halt timer.
@@ -131,7 +137,7 @@ public:
 
     RETURN: none
   */
-  inline void halt() { _timer.flagActive = false; }
+  inline void halt() { _flagActive = false; }
 
   /*
     Resume timer.
@@ -149,22 +155,22 @@ public:
   */
   inline void resume()
   {
-    if (!_timer.flagActive)
+    if (!_flagActive)
     {
-      _timer.flagActive = true;
+      _flagActive = true;
       reset();
     }
   }
 
+  inline void setPeriod(uint32_t period) { _period = period; }
+  inline uint32_t getPeriod() { return _period; }
+
 private:
-  struct Timer
-  {
-    Handler *handler;
-    bool flagStart;
-    bool flagActive;
-    uint32_t period;
-    uint32_t timestamp;
-  } _timer;
+  Handler *_handler;
+  bool _flagStart;
+  bool _flagActive;
+  uint32_t _period;
+  uint32_t _timestamp;
 };
 
 #endif
