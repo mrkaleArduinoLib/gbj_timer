@@ -143,24 +143,15 @@ public:
     Resume timer.
 
     DESCRIPTION:
-    The method resumes halted (inactive) timer with current timestamp and makes
-    it active, so that the timer's handler is run again.
-    - If the timer has starting flag set, the handler is run immidiately.
-    - The timer's period is measured from resuming.
+    The method resumes halted (inactive) and makes it active, so that it runs
+    again.
     - Resuming still active timer has no effect.
 
     PARAMETERS: none
 
     RETURN: none
   */
-  inline void resume()
-  {
-    if (!isActive())
-    {
-      _flagActive = true;
-      reset();
-    }
-  }
+  inline void resume() { _flagActive = true; }
 
   // Public setters
   inline void setPeriod(uint32_t period) { _period = period; }

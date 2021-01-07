@@ -189,9 +189,7 @@ None
 ## resume()
 
 #### Description
-The method resumes halted (inactive) timer with current timestamp and makes it active, so that the timer's handler is run again.
-* If the timer has starting flag set, the handler is run immidiately.
-* The timer's period is measured from resuming.
+The method resumes halted (inactive) timer and makes it active, so that the timer runs again.
 * Resuming still active timer has no effect.
 
 #### Syntax
