@@ -13,6 +13,7 @@ Handler	KEYWORD1
 gbj_timer	KEYWORD2
 getPeriod	KEYWORD2
 halt	KEYWORD2
+isActive	KEYWORD2
 reset	KEYWORD2
 resume	KEYWORD2
 run	KEYWORD2

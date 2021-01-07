@@ -155,15 +155,19 @@ public:
   */
   inline void resume()
   {
-    if (!_flagActive)
+    if (!isActive())
     {
       _flagActive = true;
       reset();
     }
   }
 
+  // Public setters
   inline void setPeriod(uint32_t period) { _period = period; }
+
+  // Public getters
   inline uint32_t getPeriod() { return _period; }
+  inline bool isActive() { return _flagActive; }
 
 private:
   Handler *_handler;

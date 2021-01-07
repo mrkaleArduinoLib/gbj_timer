@@ -39,11 +39,14 @@ Library provides periodical calling of a procedure (timer handler) without input
 * [run()](#run)
 
 
-##### Getters and Setters
+##### Setters
 
-* [getPeriod()](#getPeriod)
 * [setPeriod()](#setPeriod)
 
+
+##### Getters
+* [getPeriod()](#getPeriod)
+* [isActive()](#isActive)
 
 
 <a id="handler"></a>
@@ -206,6 +209,31 @@ None
 [Back to interface](#interface)
 
 
+<a id="setPeriod"></a>
+## setPeriod()
+
+#### Description
+The method sets a new timer period. It allows to dynamically change a timer frequency in an application.
+
+#### Syntax
+    void setPeriod(uint32_t timerPeriod)
+
+#### Parameters
+* **timerPeriod**: Duration of a repeating interval in milliseconds.
+  * *Valid values*: 0 ~ 2^32 * 1
+  * *Default value*: none
+
+#### Returns
+None
+
+#### See also
+[gbj_timer()](#constructor)
+
+[getPeriod()](#getPeriod)
+
+[Back to interface](#interface)
+
+
 <a id="getPeriod"></a>
 ## getPeriod()
 
@@ -229,26 +257,24 @@ Current timer period in milliseconds.
 [Back to interface](#interface)
 
 
-<a id="setPeriod"></a>
-## setPeriod()
+<a id="isActive"></a>
+## isActive()
 
 #### Description
-The method sets a new timer period. It allows to dynamically change a timer frequency in an application.
+The method returns flag about active (running, not halted) timer.
 
 #### Syntax
-    void setPeriod(uint32_t timerPeriod)
+    bool isActive()
 
 #### Parameters
-* **timerPeriod**: Duration of a repeating interval in milliseconds.
-  * *Valid values*: 0 ~ 2^32 * 1
-  * *Default value*: none
-
-#### Returns
 None
 
-#### See also
-[gbj_timer()](#constructor)
+#### Returns
+Flag about current timer activity.
 
-[getPeriod()](#getPeriod)
+#### See also
+[halt()](#halt)
+
+[resume()](#resume)
 
 [Back to interface](#interface)
