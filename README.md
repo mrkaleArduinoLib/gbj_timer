@@ -1,6 +1,7 @@
 <a id="library"></a>
 # gbj_timer
 Library provides periodical calling of a procedure (timer handler) without input and output parameters.
+
 * The library does not use system interrupts, just the `millis()` function.
 
 
@@ -12,7 +13,6 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 #### Arduino platform (including Espressif ESP8266, ESP32)
 * **Arduino.h**: Main include file for the Arduino SDK version greater or equal to 100.
-* **WProgram.h**: Main include file for the Arduino SDK version less than 100.
 * **inttypes.h**: Integer type conversions. This header file includes the exact-width integer definitions and extends them with additional facilities provided by the implementation.
 
 
@@ -54,6 +54,7 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 #### Description
 The template or signature of a timer handler, which is call by a timer at the end of a timer period, or immediatelly at the begining of it respectivelly.
+
 * A handler is just a bare function without any input parameters and returning nothing.
 
 #### Syntax
@@ -73,6 +74,7 @@ None
 
 #### Description
 Constructor creates the class instance object and initiate a timer.
+
 * Timer handler is a procedure (function) within a sketch that receives no parameters and returns no value.
 * Timer without a time handler is suitable for created internal timer objects in classes and run their member functions as handlers separately.
 
@@ -129,7 +131,9 @@ void loop()
 
 #### Description
 The method should be called in the LOOP section of a sketch. It evaluates a timer and calls its handler at appripriate time.
+
 * The method does not run a halted timer and one with zero time period.
+* The method still measures time, i.e., saves timestamp of its recent running even if in inactive mode.
 
 #### Syntax
     bool run()
@@ -168,7 +172,7 @@ None
 ## halt()
 
 #### Description
-The method suspends (temprary stops) the timer and makes it inactive, so that the timer's handler is not run more.
+The method suspends (temporary stops) the timer and makes it inactive, so that the timer's handler is not run more.
 
 #### Syntax
     void halt()
@@ -190,6 +194,8 @@ None
 
 #### Description
 The method resumes halted (inactive) timer and makes it active, so that the timer runs again.
+
+* Because the timer measures time always, although it is in inactive, it calls next run after timer period, not imediately after resuming.
 * Resuming still active timer has no effect.
 
 #### Syntax

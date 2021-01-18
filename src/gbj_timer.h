@@ -97,7 +97,10 @@ public:
   bool run()
   {
     if (_period == 0 || !_flagActive)
+    {
+      _timestamp = millis();
       return false;
+    }
     // Active timer
     unsigned long tsNow = millis();
     if (tsNow - _timestamp >= _period || _flagStart)
