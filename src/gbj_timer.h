@@ -133,7 +133,7 @@ public:
     Halt timer.
 
     DESCRIPTION:
-    The method suspends (temprary stops) the timer and makes it inactive, so
+    The method suspends (temporary stops) the timer and makes it inactive, so
     that the timer's handler is not run more.
 
     PARAMETERS: none
