@@ -84,7 +84,7 @@ Constructor creates the class instance object and initiate a timer.
 #### Parameters
 <a id="prm_timerPeriod"></a>
 * **timerPeriod**: Duration of a repeating interval in milliseconds.
-  * *Valid values*: 0 ~ 2^32 * 1
+  * *Valid values*: 0 ~ 2^32 - 1
   * *Default value*: none
 
 
@@ -224,7 +224,7 @@ The method sets a new timer period. It allows to dynamically change a timer freq
 
 #### Parameters
 * **timerPeriod**: Duration of a repeating interval in milliseconds.
-  * *Valid values*: 0 ~ 2^32 * 1
+  * *Valid values*: 0 ~ 2^32 - 1
   * *Default value*: none
 
 #### Returns
