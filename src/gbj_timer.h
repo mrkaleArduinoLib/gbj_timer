@@ -74,9 +74,9 @@ public:
                    Handler *timerHandler = 0,
                    bool start = false)
   {
-    _period = timerPeriod;
-    _handler = timerHandler;
-    _flagStart = start;
+    period_ = timerPeriod;
+    handler_ = timerHandler;
+    flagStart_ = start;
     reset();
     resume();
   }
@@ -96,20 +96,20 @@ public:
   */
   bool run()
   {
-    if (_period == 0 || !_flagActive)
+    if (period_ == 0 || !flagActive_)
     {
-      _timestamp = millis();
+      timestamp_ = millis();
       return false;
     }
     // Active timer
     unsigned long tsNow = millis();
-    if (tsNow - _timestamp >= _period || _flagStart)
+    if (tsNow - timestamp_ >= period_ || flagStart_)
     {
-      _timestamp = tsNow;
-      _flagStart = false;
-      if (_handler)
+      timestamp_ = tsNow;
+      flagStart_ = false;
+      if (handler_)
       {
-        _handler();
+        handler_();
       }
       return true;
     }
@@ -127,7 +127,7 @@ public:
 
     RETURN: none
   */
-  inline void reset() { _timestamp = millis(); }
+  inline void reset() { timestamp_ = millis(); }
 
   /*
     Halt timer.
@@ -140,7 +140,7 @@ public:
 
     RETURN: none
   */
-  inline void halt() { _flagActive = false; }
+  inline void halt() { flagActive_ = false; }
 
   /*
     Resume timer.
@@ -154,21 +154,21 @@ public:
 
     RETURN: none
   */
-  inline void resume() { _flagActive = true; }
+  inline void resume() { flagActive_ = true; }
 
   // Public setters
-  inline void setPeriod(uint32_t period) { _period = period; }
+  inline void setPeriod(uint32_t period) { period_ = period; }
 
   // Public getters
-  inline uint32_t getPeriod() { return _period; }
-  inline bool isActive() { return _flagActive; }
+  inline uint32_t getPeriod() { return period_; }
+  inline bool isActive() { return flagActive_; }
 
 private:
-  Handler *_handler;
-  bool _flagStart;
-  bool _flagActive;
-  uint32_t _period;
-  uint32_t _timestamp;
+  Handler *handler_;
+  bool flagStart_;
+  bool flagActive_;
+  uint32_t period_;
+  uint32_t timestamp_;
 };
 
 #endif
