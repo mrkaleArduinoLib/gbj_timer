@@ -1,4 +1,5 @@
 <a id="library"></a>
+
 # gbj_timer
 Library provides periodical calling of a procedure (timer handler) without input and output parameters.
 
@@ -6,6 +7,7 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 
 <a id="dependency"></a>
+
 ## Dependency
 
 #### Particle platform
@@ -17,17 +19,15 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 
 <a id="constants"></a>
+
 ## Constants
 
 * **VERSION**: Name and semantic version of the library.
 
 
 <a id="interface"></a>
+
 ## Interface
-
-##### Custom data types
-
-* [Handler()](#handler)
 
 
 ##### Main functions
@@ -49,13 +49,19 @@ Library provides periodical calling of a procedure (timer handler) without input
 * [isActive()](#isActive)
 
 
+## Custom data types
+
+* [Handler()](#handler)
+
+
 <a id="handler"></a>
+
 ## Handler
 
 #### Description
-The template or signature of a timer handler, which is call by a timer at the end of a timer period, or immediatelly at the begining of it respectivelly.
-
+The template or the signature of a timer handler function, which is called by a timer at the end of a timer period, or immediatelly at the begining of it respectivelly.
 * A handler is just a bare function without any input parameters and returning nothing.
+* A handler can be declared just as `void` type. It is not needed to be declared as `gbj_timer::Handler` type.
 
 #### Syntax
     void gbj_timer::Handler()
@@ -70,11 +76,11 @@ None
 
 
 <a id="constructor"></a>
+
 ## gbj_timer()
 
 #### Description
 Constructor creates the class instance object and initiate a timer.
-
 * Timer handler is a procedure (function) within a sketch that receives no parameters and returns no value.
 * Timer without a time handler is suitable for created internal timer objects in classes and run their member functions as handlers separately.
 
@@ -82,7 +88,9 @@ Constructor creates the class instance object and initiate a timer.
     gbj_timer(uint32_t timerPeriod, Handler* timerHandler, bool start)
 
 #### Parameters
+
 <a id="prm_timerPeriod"></a>
+
 * **timerPeriod**: Duration of a repeating interval in milliseconds.
   * *Valid values*: 0 ~ 2^32 - 1
   * *Default value*: none
@@ -127,11 +135,11 @@ void loop()
 
 
 <a id="run"></a>
+
 ## run()
 
 #### Description
 The method should be called in the LOOP section of a sketch. It evaluates a timer and calls its handler at appripriate time.
-
 * The method does not run a halted timer and one with zero time period.
 * The method still measures time, i.e., saves timestamp of its recent running even if in inactive mode.
 
@@ -148,6 +156,7 @@ Flag about reaching a timer period and some action should be taken.
 
 
 <a id="reset"></a>
+
 ## reset()
 
 #### Description
@@ -169,6 +178,7 @@ None
 
 
 <a id="halt"></a>
+
 ## halt()
 
 #### Description
@@ -190,6 +200,7 @@ None
 
 
 <a id="resume"></a>
+
 ## resume()
 
 #### Description
@@ -214,6 +225,7 @@ None
 
 
 <a id="setPeriod"></a>
+
 ## setPeriod()
 
 #### Description
@@ -239,6 +251,7 @@ None
 
 
 <a id="getPeriod"></a>
+
 ## getPeriod()
 
 #### Description
@@ -262,6 +275,7 @@ Current timer period in milliseconds.
 
 
 <a id="isActive"></a>
+
 ## isActive()
 
 #### Description
