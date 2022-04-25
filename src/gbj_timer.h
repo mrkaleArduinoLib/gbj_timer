@@ -30,7 +30,7 @@
 class gbj_timer
 {
 public:
-  static const String VERSION;
+  const char *VERSION = "GBJ_TIMER 1.2.0";
 
   typedef void Handler();
 
@@ -117,19 +117,6 @@ public:
   }
 
   /*
-    Reset timer.
-
-    DESCRIPTION:
-    The method sets the timestamp of the timer to the current time, so that
-    the timer starts counting from beginning of its period.
-
-    PARAMETERS: none
-
-    RETURN: none
-  */
-  inline void reset() { timestamp_ = millis(); }
-
-  /*
     Halt timer.
 
     DESCRIPTION:
@@ -141,6 +128,19 @@ public:
     RETURN: none
   */
   inline void halt() { flagActive_ = false; }
+
+  /*
+    Reset timer.
+
+    DESCRIPTION:
+    The method sets the timestamp of the timer to the current time, so that
+    the timer starts counting from beginning of its period.
+
+    PARAMETERS: none
+
+    RETURN: none
+  */
+  inline void reset() { timestamp_ = millis(); }
 
   /*
     Resume timer.
@@ -155,6 +155,22 @@ public:
     RETURN: none
   */
   inline void resume() { flagActive_ = true; }
+
+  /*
+    Restart timer.
+
+    DESCRIPTION:
+    The wrapper method for resuming and resetting the timer.
+
+    PARAMETERS: none
+
+    RETURN: none
+  */
+  inline void restart()
+  {
+    resume();
+    reset();
+  }
 
   // Public setters
   inline void setPeriod(uint32_t period) { period_ = period; }

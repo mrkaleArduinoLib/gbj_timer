@@ -2,7 +2,6 @@
 
 # gbj_timer
 Library provides periodical calling of a procedure (timer handler) without input and output parameters.
-
 * The library does not use system interrupts, just the `millis()` function.
 
 
@@ -21,7 +20,6 @@ Library provides periodical calling of a procedure (timer handler) without input
 <a id="constants"></a>
 
 ## Constants
-
 * **VERSION**: Name and semantic version of the library.
 
 
@@ -31,16 +29,15 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 
 ##### Main functions
-
 * [gbj_timer()](#constructor)
 * [halt()](#halt)
 * [reset()](#reset)
 * [resume()](#resume)
+* [restart()](#restart)
 * [run()](#run)
 
 
 ##### Setters
-
 * [setPeriod()](#setPeriod)
 
 
@@ -50,7 +47,6 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 
 ## Custom data types
-
 * [Handler()](#handler)
 
 
@@ -85,7 +81,7 @@ Constructor creates the class instance object and initiate a timer.
 * Timer without a time handler is suitable for created internal timer objects in classes and run their member functions as handlers separately.
 
 #### Syntax
-    gbj_timer(uint32_t timerPeriod, Handler* timerHandler, bool start)
+    gbj_timer(uint32_t timerPeriod, Handler *timerHandler, bool start)
 
 #### Parameters
 
@@ -119,6 +115,7 @@ void loop()
   timer.run();
 }
 ```
+
 ```cpp
 void timerTest() {}
 gbj_timer timer = gbj_timer(1000L);
@@ -151,28 +148,6 @@ None
 
 #### Returns
 Flag about reaching a timer period and some action should be taken.
-
-[Back to interface](#interface)
-
-
-<a id="reset"></a>
-
-## reset()
-
-#### Description
-The method sets the timestamp of the timer to the current time, so that the timer starts counting from beginning of its period.
-
-#### Syntax
-    void reset()
-
-#### Parameters
-None
-
-#### Returns
-None
-
-#### See also
-[run()](#run)
 
 [Back to interface](#interface)
 
@@ -220,6 +195,52 @@ None
 
 #### See also
 [halt()](#halt)
+
+[Back to interface](#interface)
+
+
+<a id="reset"></a>
+
+## reset()
+
+#### Description
+The method sets the timestamp of the timer to the current time, so that the timer starts counting from beginning of its period.
+
+#### Syntax
+    void reset()
+
+#### Parameters
+None
+
+#### Returns
+None
+
+#### See also
+[run()](#run)
+
+[Back to interface](#interface)
+
+
+<a id="restart"></a>
+
+## restart()
+
+#### Description
+The wrapper method for resuming and resetting the timer.
+
+#### Syntax
+    void restart()
+
+#### Parameters
+None
+
+#### Returns
+None
+
+#### See also
+[resume()](#resume)
+
+[reset()](#reset)
 
 [Back to interface](#interface)
 

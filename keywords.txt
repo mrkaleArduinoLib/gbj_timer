@@ -16,6 +16,7 @@ halt	KEYWORD2
 isActive	KEYWORD2
 reset	KEYWORD2
 resume	KEYWORD2
+restart	KEYWORD2
 run	KEYWORD2
 setPeriod	KEYWORD2
 
