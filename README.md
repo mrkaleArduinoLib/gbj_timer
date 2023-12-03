@@ -17,12 +17,6 @@ Library provides periodical calling of a procedure (timer handler) without input
 * **inttypes.h**: Integer type conversions. This header file includes the exact-width integer definitions and extends them with additional facilities provided by the implementation.
 
 
-<a id="constants"></a>
-
-## Constants
-* **VERSION**: Name and semantic version of the library.
-
-
 <a id="interface"></a>
 
 ## Interface
@@ -81,7 +75,7 @@ Constructor creates the class instance object and initiate a timer.
 * Timer without a time handler is suitable for created internal timer objects in classes and run their member functions as handlers separately.
 
 #### Syntax
-    gbj_timer(uint32_t timerPeriod, Handler *timerHandler, bool start)
+    gbj_timer(uint32_t timerPeriod, Handler *timerHandler, bool start, bool halt)
 
 #### Parameters
 
@@ -101,6 +95,13 @@ Constructor creates the class instance object and initiate a timer.
   * *Valid values*: true, false
     * **true**: The timer handler is called at the very first calling the method [run()](#run).
     * **false**: The timer handler is called the first time after set time period counting from the setting period by this method.
+  * *Default value*: false
+
+
+* **halt**: Flag about immediate halting the timer.
+  * *Valid values*: true, false
+    * **true**: The timer is halted for the very beginning and the method [run()](#run) is not called even if the immidiate start is enabled. In order to activate the timer, it should be restarted by [restart()](#resume) or just resumed [resume()](#resume), if not entire new period is needed.
+    * **false**: The timer is in active mode from the very beginning.
   * *Default value*: false
 
 #### Returns
@@ -125,8 +126,25 @@ void loop()
 }
 ```
 
+```cpp
+void timerTest() {}
+gbj_timer timer = gbj_timer(1000L, timerTest, false, true);
+void setup()
+{
+  timer.restart();
+}
+void loop()
+{
+  timer.run();
+}
+```
+
 #### See also
 [run()](#run)
+
+[restart()](#restart)
+
+[resume()](#resume)
 
 [Back to interface](#interface)
 

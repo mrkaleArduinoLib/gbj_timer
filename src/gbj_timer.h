@@ -30,8 +30,6 @@
 class gbj_timer
 {
 public:
-  const char *VERSION = "GBJ_TIMER 1.2.0";
-
   typedef void Handler();
 
   /*
@@ -68,17 +66,27 @@ public:
                 after set time period counting from the setting
                 period by this method.
 
+    halt - Flag about immediate halting the timer.
+      - Data type: boolean
+      - Default value: false
+      - Limited range: true, false
+        - true: The timer is halted for the very beginning and the method run()
+                is not called even if the immidiate start is enabled. In order
+                to activate the timer, it should be restarted or resumed.
+        - false: The timer is in active mode from the very beginning.
+
     RETURN: none
   */
   inline gbj_timer(uint32_t timerPeriod,
                    Handler *timerHandler = 0,
-                   bool start = false)
+                   bool start = false,
+                   bool halt = false)
   {
     period_ = timerPeriod;
     handler_ = timerHandler;
     flagStart_ = start;
-    reset();
-    resume();
+    flagActive_ = !halt;
+    timestamp_ = millis();
   }
 
   /*
