@@ -3,6 +3,7 @@
 # gbj_timer
 Library provides periodical calling of a procedure (timer handler) without input and output parameters.
 * The library does not use system interrupts, just the `millis()` function.
+* The timer realizes timing at the principle `not sooner than`.
 
 
 <a id="dependency"></a>
@@ -24,6 +25,7 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 ##### Main functions
 * [gbj_timer()](#constructor)
+* [fire()](#fire)
 * [halt()](#halt)
 * [reset()](#reset)
 * [resume()](#resume)
@@ -166,6 +168,28 @@ None
 
 #### Returns
 Flag about reaching a timer period and some action should be taken.
+
+[Back to interface](#interface)
+
+
+<a id="fire"></a>
+
+## fire()
+
+#### Description
+The method starts new timer period and runs the timer's handler, if defined.
+
+#### Syntax
+    void fire()
+
+#### Parameters
+None
+
+#### Returns
+None
+
+#### See also
+[run()](#run)
 
 [Back to interface](#interface)
 

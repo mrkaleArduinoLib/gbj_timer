@@ -90,7 +90,7 @@ public:
   }
 
   /*
-    Process a timer.
+    Process timer
 
     DESCRIPTION:
     The method should be called in the LOOP section of a sketch. It evaluates
@@ -110,22 +110,36 @@ public:
       return false;
     }
     // Active timer
-    unsigned long tsNow = millis();
-    if (tsNow - timestamp_ >= period_ || flagStart_)
+    if (millis() - timestamp_ >= period_ || flagStart_)
     {
-      timestamp_ = tsNow;
+      fire();
       flagStart_ = false;
-      if (handler_)
-      {
-        handler_();
-      }
       return true;
     }
     return false;
   }
 
   /*
-    Halt timer.
+    Run timer immediately
+
+    DESCRIPTION:
+    The method resets the timer and runs its handler, if defined.
+
+    PARAMETERS: none
+
+    RETURN: none
+  */
+  void fire()
+  {
+    reset();
+    if (handler_)
+    {
+      handler_();
+    }
+  }
+
+  /*
+    Halt timer
 
     DESCRIPTION:
     The method suspends (temporary stops) the timer and makes it inactive, so
@@ -138,7 +152,7 @@ public:
   inline void halt() { flagActive_ = false; }
 
   /*
-    Reset timer.
+    Reset timer
 
     DESCRIPTION:
     The method sets the timestamp of the timer to the current time, so that
@@ -151,7 +165,7 @@ public:
   inline void reset() { timestamp_ = millis(); }
 
   /*
-    Resume timer.
+    Resume timer
 
     DESCRIPTION:
     The method resumes halted (inactive) and makes it active, so that it runs
@@ -165,7 +179,7 @@ public:
   inline void resume() { flagActive_ = true; }
 
   /*
-    Restart timer.
+    Restart timer
 
     DESCRIPTION:
     The wrapper method for resuming and resetting the timer.
