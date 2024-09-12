@@ -10,18 +10,17 @@ Library provides periodical calling of a procedure (timer handler) without input
 
 ## Dependency
 
-#### Particle platform
-* **Particle.h**: Includes alternative (C++) data type definitions.
-
-#### Arduino platform (including Espressif ESP8266, ESP32)
-* **Arduino.h**: Main include file for the Arduino SDK version greater or equal to 100.
+#### Arduino platform
+* **Arduino.h**: Main include file for the Arduino SDK.
 * **inttypes.h**: Integer type conversions. This header file includes the exact-width integer definitions and extends them with additional facilities provided by the implementation.
+
+#### Espressif platform
+* **Arduino.h**: Main include file for the Arduino platform.
 
 
 <a id="interface"></a>
 
 ## Interface
-
 
 ##### Main functions
 * [gbj_timer()](#constructor)
@@ -32,15 +31,12 @@ Library provides periodical calling of a procedure (timer handler) without input
 * [restart()](#restart)
 * [run()](#run)
 
-
 ##### Setters
 * [setPeriod()](#setPeriod)
-
 
 ##### Getters
 * [getPeriod()](#getPeriod)
 * [isActive()](#isActive)
-
 
 ## Custom data types
 * [Handler()](#handler)
@@ -90,7 +86,7 @@ Constructor creates the class instance object and initiate a timer.
 
 * **timerHandler**: Pointer to a procedure that is called periodically by the timer. If no handler is provided, the timer just runs.
   * *Valid values*: valid address space
-  * *Default value*: 0
+  * *Default value*: nullptr
 
 
 * **start**: Flag about immediate starting the timer.

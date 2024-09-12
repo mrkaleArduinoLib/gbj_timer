@@ -23,8 +23,6 @@
   #include <inttypes.h>
 #elif defined(ESP8266) || defined(ESP32)
   #include <Arduino.h>
-#elif defined(PARTICLE)
-  #include <Particle.h>
 #endif
 
 class gbj_timer
@@ -53,7 +51,7 @@ public:
       the timer.
       If no handler is provided, the timer just runs.
       - Data type: Handler
-      - Default value: 0
+      - Default value: nullptr
       - Limited range: system address range
 
     start - Flag about immediate starting the timer.
@@ -78,7 +76,7 @@ public:
     RETURN: none
   */
   inline gbj_timer(uint32_t timerPeriod,
-                   Handler *timerHandler = 0,
+                   Handler *timerHandler = nullptr,
                    bool start = false,
                    bool halt = false)
   {
@@ -132,7 +130,7 @@ public:
   void fire()
   {
     reset();
-    if (handler_)
+    if (handler_ != nullptr)
     {
       handler_();
     }
