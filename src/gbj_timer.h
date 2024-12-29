@@ -100,7 +100,7 @@ public:
     RETURN:
     Flag about reaching a timer period and some action should be taken.
   */
-  bool run()
+  inline bool run()
   {
     if (period_ == 0 || !flagActive_)
     {
@@ -127,7 +127,7 @@ public:
 
     RETURN: none
   */
-  void fire()
+  inline void fire()
   {
     reset();
     if (handler_ != nullptr)
